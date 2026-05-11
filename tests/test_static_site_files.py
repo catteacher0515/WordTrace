@@ -16,13 +16,17 @@ class StaticSiteFilesTests(unittest.TestCase):
         self.assertIn("四级备考重点词书-2021到2025-top300.html", html)
         self.assertIn("window.location.replace", html)
 
-    def test_vercel_config_marks_project_as_static(self):
-        config_path = ROOT / "vercel.json"
+    def test_github_pages_workflow_exists(self):
+        workflow_path = ROOT / ".github" / "workflows" / "deploy-pages.yml"
 
-        self.assertTrue(config_path.exists(), "vercel.json should exist for Vercel deploy")
+        self.assertTrue(workflow_path.exists(), "deploy-pages workflow should exist")
 
-        config = json.loads(config_path.read_text(encoding="utf-8"))
-        self.assertEqual(config.get("framework"), None)
+        workflow = workflow_path.read_text(encoding="utf-8")
+        self.assertIn("actions/configure-pages", workflow)
+        self.assertIn("actions/upload-pages-artifact", workflow)
+        self.assertIn("actions/deploy-pages", workflow)
+        self.assertIn("cp index.html _site/index.html", workflow)
+        self.assertIn("cp output/四级备考重点词书-2021到2025-top300.html", workflow)
 
 
 if __name__ == "__main__":

@@ -73,15 +73,7 @@ open output/四级备考重点词书-2021到2025-top300.html
 
 ## 是否可以直接上线
 
-可以，而且静态部署就是最合适的方式。
-
-适合的托管方式包括：
-
-- Vercel
-- GitHub Pages
-- Netlify
-
-如果只是为了尽快给别人访问，我建议优先用 `Vercel`，因为它对这种纯静态 HTML 页面最省事。
+可以，而且最适合当前项目的方式就是 `GitHub Pages`。
 
 ## 推荐部署方式
 
@@ -95,12 +87,32 @@ open output/四级备考重点词书-2021到2025-top300.html
 
 更稳妥一点的做法是后面把产物整理成一个专门的 `site/` 或 `docs/` 目录，用来承接静态部署入口。
 
-当前仓库已经补了两个上线所需的最小文件：
+当前仓库已经补了 GitHub 静态部署所需的最小文件：
 
 - `index.html`
-- `vercel.json`
+- `.github/workflows/deploy-pages.yml`
 
-所以现在可以直接把这个 GitHub 仓库连接到 Vercel，按纯静态站点方式部署。
+部署逻辑是：
+
+- GitHub Pages 访问根入口 `index.html`
+- 页面自动跳转到 `output/四级备考重点词书-2021到2025-top300.html`
+- GitHub Actions 只上传静态站点需要的文件，不把测试、脚本、源码一起暴露为站点内容
+
+## GitHub Pages 如何上线
+
+现在仓库代码已经准备好，剩下的是 GitHub Pages 开关本身。
+
+你只需要在仓库里做这一步：
+
+1. 打开 `Settings`
+2. 进入 `Pages`
+3. 在 `Build and deployment` 里把 `Source` 切成 `GitHub Actions`
+
+做完之后，这个仓库在后续 push 时就会自动部署。
+
+如果是第一次开启，GitHub Pages 地址通常会是：
+
+- `https://catteacher0515.github.io/WordTrace/`
 
 ## 测试
 
