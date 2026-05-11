@@ -285,6 +285,12 @@ def render_wordbook_html(rows: list[dict[str, str]], title: str) -> str:
       cursor: pointer;
     }}
 
+    .filter-toggle.subtle {{
+      color: var(--muted);
+      border-color: rgba(34, 32, 24, 0.10);
+      background: rgba(255,255,255,0.42);
+    }}
+
     .filter-toggle.active {{
       background: rgba(75,107,83,0.14);
       border-color: rgba(75,107,83,0.28);
@@ -585,6 +591,7 @@ def render_wordbook_html(rows: list[dict[str, str]], title: str) -> str:
           <a href="#可以积累">可以积累</a>
         </nav>
         <button id="filter-unmastered-toggle" class="filter-toggle" type="button">只看待记</button>
+        <button id="reset-progress-button" class="filter-toggle subtle" type="button">重置进度</button>
       </div>
     </header>
 
@@ -601,6 +608,7 @@ def render_wordbook_html(rows: list[dict[str, str]], title: str) -> str:
     const cards = [...document.querySelectorAll('.word-card')];
     const buttons = [...document.querySelectorAll('.mastery-toggle')];
     const filterToggle = document.getElementById('filter-unmastered-toggle');
+    const resetButton = document.getElementById('reset-progress-button');
     const total = cards.length;
 
     function loadProgress() {{
@@ -621,6 +629,14 @@ def render_wordbook_html(rows: list[dict[str, str]], title: str) -> str:
 
     function saveFilterState(value) {{
       localStorage.setItem(FILTER_STORAGE_KEY, value ? '1' : '0');
+    }}
+
+    function resetProgressState() {{
+      localStorage.removeItem(STORAGE_KEY);
+      localStorage.removeItem(FILTER_STORAGE_KEY);
+      Object.keys(progress).forEach(key => delete progress[key]);
+      showUnmasteredOnly = false;
+      applyProgress(progress, showUnmasteredOnly);
     }}
 
     function applyProgress(progress, showUnmasteredOnly) {{
@@ -688,6 +704,10 @@ def render_wordbook_html(rows: list[dict[str, str]], title: str) -> str:
       showUnmasteredOnly = !showUnmasteredOnly;
       saveFilterState(showUnmasteredOnly);
       applyProgress(progress, showUnmasteredOnly);
+    }});
+
+    resetButton.addEventListener('click', () => {{
+      resetProgressState();
     }});
   </script>
 </body>

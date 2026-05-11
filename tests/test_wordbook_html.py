@@ -97,6 +97,26 @@ class WordbookHtmlTests(unittest.TestCase):
         self.assertIn("wordbook-filter-unmastered-v1", html)
         self.assertIn("show-unmastered-only", html)
 
+    def test_render_wordbook_html_includes_reset_progress_control(self):
+        rows = [
+            {
+                "序号": "1",
+                "重点词汇": "study",
+                "中文义项": "学习；研究",
+                "常见词形": "study, studied, studies, studying",
+                "备考建议": "优先掌握",
+                "总出现次数": "151",
+                "覆盖真题套数": "28",
+            }
+        ]
+
+        html = render_wordbook_html(rows, "测试词书")
+
+        self.assertIn("重置进度", html)
+        self.assertIn("reset-progress-button", html)
+        self.assertIn("localStorage.removeItem(STORAGE_KEY)", html)
+        self.assertIn("localStorage.removeItem(FILTER_STORAGE_KEY)", html)
+
 
 if __name__ == "__main__":
     unittest.main()
