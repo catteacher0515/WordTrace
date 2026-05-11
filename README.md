@@ -1,29 +1,111 @@
 # WordTrace
 
-WordTrace is a small local workflow for extracting English words from CET-4 past papers, cleaning the text, building frequency-based study lists, and rendering a reading-first HTML wordbook with local progress tracking.
+`WordTrace` 是一个围绕英语四级真题词汇整理的小型本地项目，目标不是做复杂平台，而是把“真题文本提取 -> 清洗统计 -> 重点词表生成 -> HTML 词书展示”这条链路跑通，并沉淀成可复用成果。
 
-## Included
+当前仓库已经包含：
 
-- PDF word extraction and cleaning logic
-- CET-4 word-frequency aggregation scripts
-- Generated study outputs and HTML wordbook
-- Tests for text cleaning and wordbook rendering
+- 四级真题英文词汇提取与清洗逻辑
+- 多套真题的词频统计与汇总脚本
+- 面向备考使用的重点词表产物
+- 可直接打开阅读的 HTML 词书
+- 基于浏览器本地缓存的学习进度记录
 
-## Not Included
+## 仓库包含什么
 
-- Raw PDF source files under `四六级真题/`
+- `wordtrace/pdf_wordfreq.py`
+  负责 PDF 文本提取、清洗和词频统计。
 
-Those files stay local because they are large source materials and are not needed to review or reuse the code/output structure in this repository.
+- `wordtrace/wordbook_html.py`
+  负责把重点词表渲染成阅读优先的 HTML 词书。
 
-## Main Files
+- `scripts/pdf_wordfreq.py`
+  一个简单的命令行入口，便于单份或多份 PDF 的词频统计。
 
-- `wordtrace/pdf_wordfreq.py`: PDF extraction, cleaning, and frequency counting
-- `wordtrace/wordbook_html.py`: HTML wordbook renderer
-- `scripts/pdf_wordfreq.py`: simple CLI entry for extraction and counting
-- `output/四级备考重点词书-2021到2025-top300.html`: current reading-first CET-4 wordbook
+- `output/四级备考重点词书-2021到2025-top300.html`
+  当前可直接使用的词书页面。
 
-## Verification
+- `tests/`
+  包含文本清洗和 HTML 词书渲染的测试。
+
+## 仓库不包含什么
+
+- `四六级真题/` 原始 PDF 文件不会进入 Git 仓库。
+
+原因很简单：
+
+- 原始真题文件体积较大
+- 不适合作为公开仓库的核心内容
+- 复用这个项目时，更重要的是代码、清洗规则、产物结构和展示方式
+
+## 当前可直接使用的产物
+
+你现在最核心的成果文件是：
+
+- `output/四级备考重点词书-2021到2025-top300.html`
+
+它已经支持：
+
+- 阅读优先的词卡展示
+- `待记 / 已记住` 标记
+- `只看待记`
+- `重置进度`
+- 浏览器本地进度保存
+
+## 如何本地打开
+
+如果只是自己使用，最简单的方法就是直接在浏览器打开：
+
+```bash
+open output/四级备考重点词书-2021到2025-top300.html
+```
+
+## 是否需要后端
+
+不需要。
+
+这个项目当前是非常典型的静态站点形态：
+
+- 页面主体是单个 HTML 文件
+- 没有登录、数据库、接口调用
+- 学习进度完全依赖浏览器 `localStorage`
+
+所以它不需要部署后端服务，直接静态托管就够了。
+
+## 是否可以直接上线
+
+可以，而且静态部署就是最合适的方式。
+
+适合的托管方式包括：
+
+- Vercel
+- GitHub Pages
+- Netlify
+
+如果只是为了尽快给别人访问，我建议优先用 `Vercel`，因为它对这种纯静态 HTML 页面最省事。
+
+## 推荐部署方式
+
+如果你要上线当前词书，最简单的做法是把词书入口收敛成首页，例如：
+
+- `index.html` 直接指向当前词书内容
+
+或者保留现状，在部署平台里把入口文件设置为：
+
+- `output/四级备考重点词书-2021到2025-top300.html`
+
+更稳妥一点的做法是后面把产物整理成一个专门的 `site/` 或 `docs/` 目录，用来承接静态部署入口。
+
+## 测试
 
 ```bash
 python3 -m unittest tests/test_pdf_wordfreq.py tests/test_wordbook_html.py
 ```
+
+## 下一步可继续做什么
+
+如果后面继续迭代，这个项目比较值得补的方向有：
+
+- 把静态站点入口整理为标准首页
+- 增加部署说明文档
+- 支持导出“只看待记”的词表
+- 支持更多年份或六级数据的独立词书产物
