@@ -1,0 +1,10 @@
+.DS_Store
+__pycache__/
+*.pyc
+*.pyo
+
+# Local source PDFs are large and copyright-sensitive; keep them out of git.
+四六级真题/
+
+# Local caches
+output/.meaning_cache_top300.json
